@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Check-In</string>
+
+    <string name="main_title">Este aplicativo de check-in foi desenvolvido para gerenciar convidados de eventos, como casamentos, de forma eficiente. Com suporte a importação de listas de convidados do Excel, ele gera QR codes únicos para cada convite. Durante o evento, o app permite o check-in rápido ao escanear os QR codes, controlando o status de cada convidado em tempo real. Ideal para eventos com grandes quantidades de convidados e para otimizar o fluxo de entrada.</string>
+
+    <string name="import_title">Facilite a criação da sua lista de convidados importando diretamente um arquivo Excel ou CSV. Com essa funcionalidade, você pode adicionar várias pessoas ao mesmo tempo, economizando tempo e esforço na organização do seu evento.</string>
+</resources>

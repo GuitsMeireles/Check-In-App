@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <color name="sind_background_status_canceled_stripe">#BF2A48</color>
+    <color name="sind_background_status_ok_stripe">#2ABF8E</color>
+    <color name="sind_background_status_ok_body">#C7E3E0</color>
+    <color name="sind_background_status_canceled_body">#E3C7C7</color>
+</resources>

@@ -1,8 +1,14 @@
 package com.me1rel3s.check_in.domain.list.adapter
 
+import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.net.Uri
 import android.os.Parcel
 import android.os.Parcelable
+import android.provider.MediaStore
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -36,6 +42,33 @@ class GuestAdapter() : ListAdapter<GuestRepository.Guest, GuestAdapter.GuestView
             binding.tvEmail.text = guest.email
             binding.icUser.setImageBitmap(guest.photo) // Foto do convidado
             binding.icEnd.setImageBitmap(guest.qrCode)  // QR Code
+
+            binding.root.setOnClickListener {
+                val bitmap = getBitmapFromView(binding.root)
+                shareImage(bitmap)
+            }
+        }
+
+        private fun getBitmapFromView(view: View): Bitmap {
+            val width = view.width
+            val height = view.height
+            val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+            val canvas = Canvas(bitmap)
+            view.draw(canvas)
+            return bitmap
+        }
+
+        private fun shareImage(bitmap: Bitmap) {
+            val context = itemView.context
+            val path = MediaStore.Images.Media.insertImage(context.contentResolver, bitmap, "GuestCard", null)
+            val uri = Uri.parse(path)
+
+            val intent = Intent(Intent.ACTION_SEND).apply {
+                type = "image/jpeg"
+                putExtra(Intent.EXTRA_STREAM, uri)
+                putExtra(Intent.EXTRA_TEXT, "Confira o card do convidado!")
+            }
+            context.startActivity(Intent.createChooser(intent, "Compartilhar via"))
         }
     }
 

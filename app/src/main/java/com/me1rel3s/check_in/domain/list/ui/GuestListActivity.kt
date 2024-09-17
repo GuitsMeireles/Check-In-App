@@ -1,6 +1,12 @@
 package com.me1rel3s.check_in.domain.list.ui
 
+import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.me1rel3s.check_in.common.database.GuestRepository
@@ -28,7 +34,9 @@ class GuestListActivity : AppCompatActivity() {
     }
 
     private fun setupRecyclerView() {
-        guestAdapter = GuestAdapter()
+        guestAdapter = GuestAdapter(this) { guest, view ->
+            shareGuestCard(guest, view)
+        }
         binding.rvLists.apply {
             layoutManager = LinearLayoutManager(this@GuestListActivity)
             adapter = guestAdapter
@@ -44,5 +52,26 @@ class GuestListActivity : AppCompatActivity() {
         binding.topAppBar.setNavigationOnClickListener {
             finish()
         }
+    }
+
+    private fun shareGuestCard(guest: GuestRepository.Guest, view: View) {
+        val bitmap = getBitmapFromView(view)
+        val path = MediaStore.Images.Media.insertImage(contentResolver, bitmap, "Guest Card", null)
+        val uri = Uri.parse(path)
+
+        val intent = Intent().apply {
+            action = Intent.ACTION_SEND
+            putExtra(Intent.EXTRA_STREAM, uri)
+            type = "image/png"
+        }
+
+        startActivity(Intent.createChooser(intent, "Share guest card"))
+    }
+
+    private fun getBitmapFromView(view: View): Bitmap {
+        val bitmap = Bitmap.createBitmap(view.width, view.height, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(bitmap)
+        view.draw(canvas)
+        return bitmap
     }
 }

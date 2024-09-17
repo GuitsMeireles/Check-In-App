@@ -1,14 +1,18 @@
 package com.me1rel3s.check_in.domain.list.adapter
 
-import android.graphics.Color
+import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.me1rel3s.check_in.R
 import com.me1rel3s.check_in.common.database.GuestRepository
 import com.me1rel3s.check_in.databinding.ItemGuestBinding
 
-class GuestAdapter : RecyclerView.Adapter<GuestAdapter.GuestViewHolder>() {
+class GuestAdapter(
+    private val context: Context,
+    private val onGuestClick: (GuestRepository.Guest, View) -> Unit
+) : RecyclerView.Adapter<GuestAdapter.GuestViewHolder>() {
 
     private var guestList = listOf<GuestRepository.Guest>()
 
@@ -31,13 +35,18 @@ class GuestAdapter : RecyclerView.Adapter<GuestAdapter.GuestViewHolder>() {
         holder.binding.icUser.setImageBitmap(guest.photo)
         holder.binding.icEnd.setImageBitmap(guest.qrCode)
 
-        // Alterar a cor de fundo com base no status
+        // Alterar o fundo com base no status usando drawable
         val backgroundResource = if (guest.status == "checked") {
             R.drawable.checked_in
         } else {
             R.drawable.not_checked
         }
         holder.binding.root.setBackgroundResource(backgroundResource)
+
+        // Configurar o clique do item
+        holder.binding.root.setOnClickListener {
+            onGuestClick(guest, holder.binding.root)
+        }
     }
 
     override fun getItemCount(): Int = guestList.size
